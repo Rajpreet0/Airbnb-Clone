@@ -10,6 +10,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import CountrySelect from "../inputs/CountrySelect";
 import dynamic from "next/dynamic";
 import Counter from "../inputs/Counter";
+import ImageUpload from "../inputs/ImageUpload";
 
 // Steps inside the Modal for Listing
 enum STEPS {
@@ -54,6 +55,7 @@ const RentModal = () => {
     const guestCount = watch('guestCount');
     const roomCount = watch('roomCount');
     const bathroomCount = watch('bathroomCount');
+    const imageSrc = watch('imageSrc')
 
     // Dynamically load the Custom Map, bc it is not supported by Next
     const Map = useMemo(() => dynamic(() => import('../Map'), {
@@ -98,7 +100,7 @@ const RentModal = () => {
         return 'Back';
     }, [step])
 
-    // Set the HTML Content on the Modal
+    // Set the HTML Content on the Modal for the Categories
     let bodyContent = (
         <div className="flex flex-col gap-8">
             <Heading 
@@ -164,6 +166,21 @@ const RentModal = () => {
                     subtitle="How many bathrooms do you have ?"
                     value={bathroomCount}
                     onChange={(value) => setCustomValue('bathroomCount', value)}/>
+            </div>
+        )
+    }
+
+    // Set the HTML Content for the Image Upload Step on the Modal
+    if(step === STEPS.IMAGES) {
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <Heading
+                    title="Add a photo of your place"
+                    subtitle="Show guests what your place looks like!"/>
+                <ImageUpload
+                    value={imageSrc}
+                    onChange={(value) => setCustomValue('imageSrc', value)}
+                    />
             </div>
         )
     }
